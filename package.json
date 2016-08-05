@@ -1,5 +1,5 @@
 {
-  "name": "redux-elm-skeleton",
+  "name": "redux-elm-date-range",
   "version": "0.1.0",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --config webpack.config.js --port 3000 --hot --content-base ./",
@@ -31,6 +31,6 @@
     "redux-elm": "^2.0.10",
     "redux-saga": "^0.10.3"
   },
-  "author": "Tomas Weiss <tomasw@salsitasoft.com>",
+  "author": "Tomas Novacik <tnovacik@gmail.com>",
   "license": "MIT"
 }
