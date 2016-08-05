@@ -1,20 +1,20 @@
 import { Updater } from 'redux-elm';
 var moment = require('moment');
 
-const MAX_MONTH = 11
-const MIN_MONTH = 0
+const MAX_MONTH = 11;
+const MIN_MONTH = 0;
 
-const MONTH_NAMES = moment.months()
+const MONTH_NAMES = moment.months();
 
 const getMaxDayOfMonth = (year, month) => {
 	return new Date(year, month + 1, 0).getDate();
-}
+};
 
 var A_DATE = new Date();
 
 const getCalendarDate = (sDay, sMonth, sYear) => {
 	return [sDay, sMonth + 1, sYear].join(".");
-}
+};
 
 export const initialModel = {
 	bMonth:  A_DATE.getMonth(),

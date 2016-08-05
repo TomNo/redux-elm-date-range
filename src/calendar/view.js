@@ -5,11 +5,11 @@ import { view } from 'redux-elm';
 const btnStyle = {
     width: '80px',
     height: '40px'
-}
+};
 
 const selectedDay = {
     color: 'red'
-}
+};
 
 const renderButton = ((text, action, dispatch) => {
     return <button style={btnStyle} onClick={()=>dispatch({type: action})} >
