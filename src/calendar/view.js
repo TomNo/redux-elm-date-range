@@ -1,5 +1,5 @@
 import React from 'react';
-import { view } from 'redux-elm';
+import {view} from 'redux-elm';
 
 
 const btnStyle = {
@@ -12,9 +12,9 @@ const selectedDay = {
 };
 
 const renderButton = ((text, action, dispatch) => {
-    return <button style={btnStyle} onClick={()=>dispatch({type: action})} >
-                {text}
-            </button>;
+    return <button style={btnStyle} onClick={()=>dispatch({type: action})}>
+        {text}
+    </button>;
 });
 
 
@@ -24,15 +24,13 @@ const isCurrentDay = (({sDay, sYear, sMonth, bYear, bMonth}, day) => {
 
 const renderDays = ((model, dispatch) => {
     var content = [];
-    for(var i=1; i <= model.maxDay; i++)
-    {
+    for (var i = 1; i <= model.maxDay; i++) {
         var styleProp = {};
-        if (isCurrentDay(model, i))
-        {
-           styleProp=selectedDay;
+        if (isCurrentDay(model, i)) {
+            styleProp = selectedDay;
         }
 
-        content.push(<span style={styleProp} 
+        content.push(<span style={styleProp}
                            onClick={(ev) => dispatch({type: "DateChanged", sDay: ev.target.innerText})}
                            key={i}> {i} </span>);
     }
@@ -40,10 +38,10 @@ const renderDays = ((model, dispatch) => {
 });
 
 
-export default view(({ model, dispatch }) => {
+export default view(({model, dispatch}) => {
     return <span>
                 {renderButton("prev month", "PrevMonth", dispatch)}
-                <span>
+        <span>
                     <span>
                         {renderDays(model, dispatch)}
                     </span>
@@ -51,6 +49,6 @@ export default view(({ model, dispatch }) => {
                         {model.monthName} / {model.bYear}
                     </span>
                 </span>
-                {renderButton("next month", "NextMonth", dispatch)}
+        {renderButton("next month", "NextMonth", dispatch)}
           </span>;
 });
