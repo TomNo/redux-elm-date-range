@@ -1,5 +1,5 @@
 import {Updater} from 'redux-elm';
-var moment = require('moment');
+import moment from 'moment';
 
 const MAX_MONTH = 11;
 const MIN_MONTH = 0;
