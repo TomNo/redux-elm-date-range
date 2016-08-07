@@ -1,31 +1,12 @@
 import {Updater} from 'redux-elm';
+import {createSelector} from 'reselect';
 import moment from 'moment';
+
 
 const MAX_MONTH = 11;
 const MIN_MONTH = 0;
 
 const MONTH_NAMES = moment.months();
-
-const getMaxDayOfMonth = (year, month) => {
-    return new Date(year, month + 1, 0).getDate();
-};
-
-var A_DATE = new Date();
-
-const getCalendarDate = (sDay, sMonth, sYear) => {
-    return [sDay, sMonth + 1, sYear].join(".");
-};
-
-export const initialModel = {
-    bMonth: A_DATE.getMonth(),
-    bYear: A_DATE.getFullYear(),
-    sDay: A_DATE.getDay(),
-    sYear: A_DATE.getFullYear(),
-    sMonth: A_DATE.getMonth(),
-    monthName: MONTH_NAMES[A_DATE.getMonth()],
-    maxDay: getMaxDayOfMonth(A_DATE.getFullYear(), A_DATE.getMonth()),
-    date: getCalendarDate(A_DATE.getDay(), A_DATE.getMonth(), A_DATE.getFullYear())
-};
 
 const modMonth = ((model, num) => {
     var newMonth = model.bMonth - num;
@@ -42,11 +23,8 @@ const modMonth = ((model, num) => {
         ...model,
         bMonth: newMonth,
         bYear: newYear,
-        monthName: MONTH_NAMES[newMonth],
-        maxDay: getMaxDayOfMonth(newYear, newMonth)
     };
 });
-
 
 const incMonth = ((model) => {
     return modMonth(model, 1);
@@ -56,6 +34,34 @@ const decMonth = ((model) => {
     return modMonth(model, -1);
 });
 
+export const dateSelector = createSelector(
+    model => model.sDay,
+    model => model.sMonth,
+    model => model.sYear,
+    ((day, month, year) => [day, month + 1, year].join("."))
+);
+
+var A_DATE = new Date();
+
+export const initialModel = {
+    bMonth: A_DATE.getMonth(),
+    bYear: A_DATE.getFullYear(),
+    sDay: A_DATE.getDate(),
+    sYear: A_DATE.getFullYear(),
+    sMonth: A_DATE.getMonth(),
+};
+
+export const monthNameSelector = createSelector(
+    model => model.bMonth,
+    month => MONTH_NAMES[month]
+);
+
+export const lastDayOfMonthSelector = createSelector(
+    model => model.bYear,
+    model => model.bMonth,
+    ((year, month) => new Date(year, month + 1, 0).getDate())
+);
+
 export default new Updater(initialModel)
     .case('PrevMonth', model => (incMonth(model)))
     .case('NextMonth', model => (decMonth(model)))
@@ -64,8 +70,5 @@ export default new Updater(initialModel)
         sDay: action.sDay,
         sMonth: model.bMonth,
         sYear: model.bYear,
-        date: getCalendarDate(action.sDay,
-            model.bMonth,
-            model.bYear)
     }))
     .toReducer();

@@ -1,6 +1,6 @@
 import React from 'react';
 import {view} from 'redux-elm';
-
+import {lastDayOfMonthSelector, monthNameSelector} from '../calendar/updater'
 
 const btnStyle = {
     width: '80px',
@@ -17,26 +17,27 @@ const renderButton = ((text, action, dispatch) => {
     </button>;
 });
 
-
 const isCurrentDay = (({sDay, sYear, sMonth, bYear, bMonth}, day) => {
     return (sDay == day && sYear == bYear && sMonth == bMonth);
 });
 
 const renderDays = ((model, dispatch) => {
     var content = [];
-    for (var i = 1; i <= model.maxDay; i++) {
+    for (var i = 1; i <= lastDayOfMonthSelector(model); i++) {
         var styleProp = {};
         if (isCurrentDay(model, i)) {
             styleProp = selectedDay;
         }
 
         content.push(<span style={styleProp}
-                           onClick={(ev) => dispatch({type: "DateChanged", sDay: ev.target.innerText})}
+                           onClick={(ev) => dispatch({
+                               type: "DateChanged",
+                               sDay: ev.target.innerText
+                           })}
                            key={i}> {i} </span>);
     }
     return content;
 });
-
 
 export default view(({model, dispatch}) => {
     return <span>
@@ -46,7 +47,7 @@ export default view(({model, dispatch}) => {
                         {renderDays(model, dispatch)}
                     </span>
                     <span>
-                        {model.monthName} / {model.bYear}
+                        {monthNameSelector(model)} / {model.bYear}
                     </span>
                 </span>
         {renderButton("next month", "NextMonth", dispatch)}
