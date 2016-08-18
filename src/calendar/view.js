@@ -1,6 +1,10 @@
 import React from 'react';
 import {view} from 'redux-elm';
-import {lastDayOfMonthSelector, monthNameSelector} from '../calendar/updater'
+import {
+    lastDayOfMonthSelector,
+    monthNameSelector,
+    dateSelector
+} from '../calendar/updater'
 
 const btnStyle = {
     width: '80px',
@@ -17,11 +21,13 @@ const renderButton = ((text, action, dispatch) => {
     </button>;
 });
 
-const isCurrentDay = (({selectedDay,
-                        selectedYear,
-                        selectedMonth,
-                        browsingYear,
-                        browsingMonth}, day) => {
+const isCurrentDay = (({
+    selectedDay,
+    selectedYear,
+    selectedMonth,
+    browsingYear,
+    browsingMonth
+}, day) => {
     return (selectedDay == day && selectedYear == browsingYear &&
     selectedMonth == browsingMonth);
 });
@@ -45,16 +51,16 @@ const renderDays = ((model, dispatch) => {
 });
 
 export default view(({model, dispatch}) => {
-    return <span>
-                {renderButton("prev month", "PrevMonth", dispatch)}
-        <span>
-                    <span>
-                        {renderDays(model, dispatch)}
-                    </span>
-                    <span>
-                        {monthNameSelector(model)} / {model.browsingYear}
-                    </span>
-                </span>
-        {renderButton("next month", "NextMonth", dispatch)}
-          </span>;
+    return <div>
+        <input type="text" name={model.name} value={dateSelector(model)}
+               readOnly="true"/>
+        <div>
+            <div>
+            {renderButton("prev month", "PrevMonth", dispatch)}
+                {renderDays(model, dispatch)}
+                {renderButton("next month", "NextMonth", dispatch)}
+            </div>
+            {monthNameSelector(model)} / {model.browsingYear}
+        </div>
+    </div>;
 });

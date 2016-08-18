@@ -2,23 +2,21 @@ import {Updater} from 'redux-elm';
 import {createSelector} from 'reselect';
 
 import calendarUpdater, {
-    initialModel as calendarViewerInit,
-    dateSelector
+    initialModel as calendarViewerInit
 } from '../calendar/updater';
 
+const FROM_INPUT_NAME = "fromDate";
+const TO_INPUT_NAME = "toDate";
 
-const initialModel = {
-    from: calendarViewerInit,
-    to: {...calendarViewerInit},
-};
+export const initialModel = ((fromDate = FROM_INPUT_NAME,
+                              toDate = TO_INPUT_NAME) => {
+    return {
+        from: calendarViewerInit(fromDate),
+        to: {...calendarViewerInit(toDate)}
+    };
+});
 
-export const rangeSelector = createSelector(
-    model => dateSelector(model.from),
-    model => dateSelector(model.to),
-    (from, to) => [from, to].join("-")
-);
-
-export default new Updater(initialModel)
+export default new Updater(initialModel())
     .case('From', (model, action) =>
         ({...model, from: calendarUpdater(model.from, action)}))
     .case('To', (model, action) =>

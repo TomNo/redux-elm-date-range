@@ -39,19 +39,24 @@ export const dateSelector = createSelector(
     model => model.selectedMonth,
     model => model.selectedYear,
     ((day, month, year) => {
-        return (day && month && year) ? [day, month + 1, year].join("."): "";
+        return (day && month && year) ? [day, month + 1, year].join(".") : "";
     })
 );
 
 var A_DATE = new Date();
 
-export const initialModel = {
-    browsingMonth: A_DATE.getMonth(),
-    browsingYear: A_DATE.getFullYear(),
-    selectedDay: null,
-    selectedYear: null,
-    selectedMonth: null,
-};
+const DEFAULT_INPUT_NAME = "date";
+
+export const initialModel = ((inputName = DEFAULT_INPUT_NAME) => {
+    return {
+        browsingMonth: A_DATE.getMonth(),
+        browsingYear: A_DATE.getFullYear(),
+        selectedDay: null,
+        selectedYear: null,
+        selectedMonth: null,
+        name: inputName
+    }
+});
 
 export const monthNameSelector = createSelector(
     model => model.browsingMonth,
@@ -64,7 +69,7 @@ export const lastDayOfMonthSelector = createSelector(
     ((year, month) => new Date(year, month + 1, 0).getDate())
 );
 
-export default new Updater(initialModel)
+export default new Updater(initialModel())
     .case('PrevMonth', model => (incMonth(model)))
     .case('NextMonth', model => (decMonth(model)))
     .case('DateChanged', (model, action) => ({
