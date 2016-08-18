@@ -73,7 +73,8 @@ export default new Updater(initialModel())
             model = {
                 ...model,
                 previousFromSelection: model.from,
-                previousToSelection: model.to
+                previousToSelection: model.to,
+                rangeError: false
             };
         }
         return model;
