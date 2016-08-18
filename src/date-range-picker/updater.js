@@ -53,6 +53,12 @@ const endsWithMatcher = pattern => {
     };
 };
 
+/**
+ * Match every user action
+ * @type {(Function)}
+ */
+const everyActionMatcher = (() => {return () => {return true}});
+
 export default new Updater(initialModel())
     .case('From', (model, action) =>
         ({...model, from: calendarUpdater(model.from, action)}))
@@ -72,11 +78,15 @@ export default new Updater(initialModel())
         } else {
             model = {
                 ...model,
-                previousFromSelection: model.from,
-                previousToSelection: model.to,
                 rangeError: false
             };
         }
         return model;
     }, endsWithMatcher)
+    // after every action save changed model to
+    // previous from/to model
+    .case('', (model) => {
+        return {...model, previousToSelection: model.to,
+                previousFromSelection:model.from};
+    }, everyActionMatcher)
     .toReducer();
