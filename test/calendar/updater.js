@@ -3,20 +3,16 @@ import {assert} from 'chai';
 import updater from '../../src/calendar/updater';
 
 describe('Calendar initial model', () => {
-    it('should return initial model with current date', () => {
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth();
-        var year = date.getFullYear();
-        var expectedModel = {
-            selectedDay: day,
-            selectedYear: year,
-            selectedMonth: month,
-            browsingMonth: month,
-            browsingYear: year
-        };
-        assert.deepEqual(updater(), expectedModel);
-    });
+    it('should return initial model with browsing date set to current date',
+        () => {
+            var date = new Date();
+            var month = date.getMonth();
+            var year = date.getFullYear();
+            var expectedModel = {...updater(),
+                browsingMonth: month,
+                browsingYear: year};
+            assert.deepEqual(updater(), expectedModel);
+        });
 });
 
 describe('Calendar operation', () => {
