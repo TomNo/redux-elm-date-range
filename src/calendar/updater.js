@@ -9,8 +9,8 @@ const MIN_MONTH = 0;
 const MONTH_NAMES = moment.months();
 
 const modMonth = ((model, num) => {
-    var newMonth = model.bMonth - num;
-    var newYear = model.bYear;
+    var newMonth = model.browsingMonth - num;
+    var newYear = model.browsingYear;
     if (newMonth < MIN_MONTH) {
         newMonth = MAX_MONTH;
         newYear = newYear - 1;
@@ -21,8 +21,8 @@ const modMonth = ((model, num) => {
     }
     return {
         ...model,
-        bMonth: newMonth,
-        bYear: newYear,
+        browsingMonth: newMonth,
+        browsingYear: newYear,
     };
 });
 
@@ -35,30 +35,30 @@ const decMonth = ((model) => {
 });
 
 export const dateSelector = createSelector(
-    model => model.sDay,
-    model => model.sMonth,
-    model => model.sYear,
+    model => model.selectedDay,
+    model => model.selectedMonth,
+    model => model.selectedYear,
     ((day, month, year) => [day, month + 1, year].join("."))
 );
 
 var A_DATE = new Date();
 
 export const initialModel = {
-    bMonth: A_DATE.getMonth(),
-    bYear: A_DATE.getFullYear(),
-    sDay: A_DATE.getDate(),
-    sYear: A_DATE.getFullYear(),
-    sMonth: A_DATE.getMonth(),
+    browsingMonth: A_DATE.getMonth(),
+    browsingYear: A_DATE.getFullYear(),
+    selectedDay: A_DATE.getDate(),
+    selectedYear: A_DATE.getFullYear(),
+    selectedMonth: A_DATE.getMonth(),
 };
 
 export const monthNameSelector = createSelector(
-    model => model.bMonth,
+    model => model.browsingMonth,
     month => MONTH_NAMES[month]
 );
 
 export const lastDayOfMonthSelector = createSelector(
-    model => model.bYear,
-    model => model.bMonth,
+    model => model.browsingYear,
+    model => model.browsingMonth,
     ((year, month) => new Date(year, month + 1, 0).getDate())
 );
 
@@ -67,8 +67,8 @@ export default new Updater(initialModel)
     .case('NextMonth', model => (decMonth(model)))
     .case('DateChanged', (model, action) => ({
         ... model,
-        sDay: action.sDay,
-        sMonth: model.bMonth,
-        sYear: model.bYear,
+        selectedDay: action.selectedDay,
+        selectedMonth: model.browsingMonth,
+        selectedYear: model.browsingYear,
     }))
     .toReducer();

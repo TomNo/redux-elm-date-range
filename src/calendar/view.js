@@ -7,7 +7,7 @@ const btnStyle = {
     height: '40px'
 };
 
-const selectedDay = {
+const selectedDayStyle = {
     color: 'red'
 };
 
@@ -17,8 +17,13 @@ const renderButton = ((text, action, dispatch) => {
     </button>;
 });
 
-const isCurrentDay = (({sDay, sYear, sMonth, bYear, bMonth}, day) => {
-    return (sDay == day && sYear == bYear && sMonth == bMonth);
+const isCurrentDay = (({selectedDay,
+                        selectedYear,
+                        selectedMonth,
+                        browsingYear,
+                        browsingMonth}, day) => {
+    return (selectedDay == day && selectedYear == browsingYear &&
+    selectedMonth == browsingMonth);
 });
 
 const renderDays = ((model, dispatch) => {
@@ -26,13 +31,13 @@ const renderDays = ((model, dispatch) => {
     for (var i = 1; i <= lastDayOfMonthSelector(model); i++) {
         var styleProp = {};
         if (isCurrentDay(model, i)) {
-            styleProp = selectedDay;
+            styleProp = selectedDayStyle;
         }
 
         content.push(<span style={styleProp}
                            onClick={(ev) => dispatch({
                                type: "DateChanged",
-                               sDay: ev.target.innerText
+                               selectedDay: ev.target.innerText
                            })}
                            key={i}> {i} </span>);
     }
@@ -47,7 +52,7 @@ export default view(({model, dispatch}) => {
                         {renderDays(model, dispatch)}
                     </span>
                     <span>
-                        {monthNameSelector(model)} / {model.bYear}
+                        {monthNameSelector(model)} / {model.browsingYear}
                     </span>
                 </span>
         {renderButton("next month", "NextMonth", dispatch)}
