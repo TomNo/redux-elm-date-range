@@ -38,7 +38,9 @@ export const dateSelector = createSelector(
     model => model.selectedDay,
     model => model.selectedMonth,
     model => model.selectedYear,
-    ((day, month, year) => [day, month + 1, year].join("."))
+    ((day, month, year) => {
+        return (day && month && year) ? [day, month + 1, year].join("."): "";
+    })
 );
 
 var A_DATE = new Date();
@@ -46,9 +48,9 @@ var A_DATE = new Date();
 export const initialModel = {
     browsingMonth: A_DATE.getMonth(),
     browsingYear: A_DATE.getFullYear(),
-    selectedDay: A_DATE.getDate(),
-    selectedYear: A_DATE.getFullYear(),
-    selectedMonth: A_DATE.getMonth(),
+    selectedDay: null,
+    selectedYear: null,
+    selectedMonth: null,
 };
 
 export const monthNameSelector = createSelector(
