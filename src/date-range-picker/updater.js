@@ -1,4 +1,4 @@
-import {Updater, Matchers} from 'redux-elm';
+import {Updater} from 'redux-elm';
 import {createSelector} from 'reselect';
 
 import calendarUpdater, {
@@ -24,7 +24,7 @@ export const initialModel = ((fromDate = FROM_INPUT_NAME,
 
 
 const createDateObject = (({selectedDay, selectedYear, selectedMonth}) => {
-    if (selectedDay && selectedYear && selectedMonth) {
+    if (selectedDay != null && selectedYear != null && selectedMonth != null) {
         return new Date(selectedYear, selectedMonth, selectedDay);
     }
     else {
@@ -68,7 +68,7 @@ export default new Updater(initialModel())
         var fromDate = createDateObject(model.from);
         var toDate = createDateObject(model.to);
         // negative range check
-        if (fromDate && toDate && (fromDate - toDate) >= 0) {
+        if (fromDate != null && toDate != null && (fromDate - toDate) >= 0) {
             model = {
                 ...model,
                 rangeError: true,
